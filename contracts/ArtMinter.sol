@@ -2,14 +2,14 @@
 pragma solidity 0.8.7;
 
 // Test set of contracts, created to demonstrate how to use Flashbots to mint NFTs
-// FakeERC721 = Faulty implementation of ERC721 for demo purposes only
-// FakeArtMinter = Very simple contract converting mint() + value into FakeERC721.mint()
+// ERC721 = Faulty implementation of ERC721 for demo purposes only
+// ArtMinter = Very simple contract converting mint() + value into FakeERC721.mint()
 
 // Video tutorial here: https://www.youtube.com/user/epheph33
 
 // See: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
 // This is a HEAVILY feature-reduced/non-compliant ERC721 token. It should NOT be used in production, as it is missing major functionality and security checks.
-contract FakeERC721 {
+contract ERC721 {
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
     string public name;
@@ -91,7 +91,7 @@ contract FakeERC721 {
 }
 
 
-contract FakeArtMinter {
+contract ArtMinter {
     event FakeArtMinted(address sender, uint256 tokenId);
     uint256 constant COST_OF_ART = 0.03 ether;
 
@@ -99,13 +99,13 @@ contract FakeArtMinter {
     FakeERC721 public fakeERC721;
     constructor() {
         owner = payable(msg.sender);
-        fakeERC721 = new FakeERC721("fake", "FAKE");
+        ERC721 = new ERC721("go", "GO");
     }
     
     function mint() external payable {
         require(msg.value == COST_OF_ART);
-        uint256 tokenId = fakeERC721.mint(msg.sender);
-        emit FakeArtMinted(msg.sender, tokenId);
+        uint256 tokenId = ERC721.mint(msg.sender);
+        emit ArtMinted(msg.sender, tokenId);
         owner.transfer(msg.value);
     }
 }
